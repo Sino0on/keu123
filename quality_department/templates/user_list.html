@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Преподаватели{% endblock %}
+{% block content %}
+
+
+
+<table class="table table-striped">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">№</th>
+      <th class="col" scope="col">Имена преподавателей</th>
+      <th class="col" scope="col">Дата рождения</th>
+
+    </tr>
+  </thead>
+
+  <tbody class="table-group-divider">
+  {% for i in users %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td><a href="{% url 'user_detail' i.pk %}">{{ i }}</a></td>
+      <td>{{ i.age }}</td>
+    </tr>
+  {% endfor %}
+
+
+
+
+  </tbody>
+</table>
+
+
+
+
+{% endblock %}

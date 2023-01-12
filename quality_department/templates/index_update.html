@@ -1,0 +1,65 @@
+
+{% extends 'base.html' %}
+{% load mathfilters %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<div class="py-5 text-center">
+      <p class="lead">Рейтинг по надбавкам</p>
+      <p class="lead">Поля "Количество баллов фактически", "Сумма баллов фактически" и "Комментарий" выставляются сотрудниками Качества и Аккредитации</p>
+    </div>
+
+
+<table class="table table-striped">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">№</th>
+      <th class="col-3" scope="col">Название показателей</th>
+      <th scope="col">Балл</th>
+      <th scope="col">Кол-во показателей</th>
+      <th scope="col">Сумма баллов</th>
+        {% if form.quantityfact %}
+
+      <th class="table-success" scope="col">Количество показателей фактически</th>
+      <th class="table-success" scope="col">Сумма баллов фактически</th>
+      <th scope="col">Комментарий</th>
+        {% else %}
+        {% endif %}
+      <th scope="col">Номера приказов</th>
+      <th scope="col">Примечание</th>
+    </tr>
+  </thead>
+<form action="" method="post">
+  <tbody class="table-group-divider">
+    <tr>
+
+      <th scope="row">1</th>
+
+      <td><a href="">da</a></td>
+
+        {% csrf_token %}
+          <td>{% if form.bally %}{{ form.bally }}{% else %}{{ index.bally }}{% endif %}</td>
+          <td>{{ form.quantity }}</td>
+          <td>{{ index.bally|mul:index.quantity }}</td>
+            {% if form.quantityfact %}
+          <td>{{ form.quantityfact }}</td>
+          <td>{{ form.sumballfact }}</td>
+          <td>{{ form.comment }}</td>
+            {% endif %}
+          <td>{{ form.protocol }}</td>
+          <td>{{ form.primechanie }}</td>
+          <td><button class="btn btn-primary" type="submit">OK</button></td>
+
+
+    </tr>
+
+
+
+
+  </tbody>
+    </form>
+</table>
+
+
+
+
+{% endblock %}

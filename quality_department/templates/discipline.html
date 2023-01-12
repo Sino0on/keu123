@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>KEU</title>
+    <title>{{ discipline.title }}</title>
 </head>
 <body>
-{% for i in disciplines %}
-{{ i.title }}
-{% endfor %}
+{% if user.is_superuser %}
+
+{% endif %}
+{{ discipline.title }}
 </body>
 </html>

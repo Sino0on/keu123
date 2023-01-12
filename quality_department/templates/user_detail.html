@@ -1,0 +1,134 @@
+
+{% extends 'base.html' %}
+{% load mathfilters %}
+{% block title %}{{ account }}{% endblock %}
+{% block content %}
+
+<div class="container marketing">
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading fw-normal lh-1">{{ account.firstname }} {{ account.lastname }} {{ account.dadname }}</h2>
+          <p>Дата рождение: {{ account.age }}</p>
+        <table class="table table-striped pt-5">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">№</th>
+      <th class="col" scope="col">Название показателей</th>
+    </tr>
+  </thead>
+
+  <tbody class="table-group-divider">
+  {% for i in account.disciplines.all %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td><a href="{% url 'discipline_detail' i.pk %}">{{ i.title }}</a></td>
+
+    </tr>
+  {% endfor %}
+
+
+
+
+
+  </tbody>
+</table>
+        <button type="button" class="btn btn-primary m-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Распечатать отчет
+  </button>
+      </div>
+      <div class="col-md-3 order-md-1">
+
+          {% if account.image %}
+          <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src="{{ account.image.url }}" role="img" aria-label="Placeholder: 500x500">
+
+          {% else %}
+            <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#eee"></rect><text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text></svg>
+          {% endif %}
+      </div>
+    </div>
+</div>
+<div class="container pt-5 mx-5 text-center">
+<form action="">
+
+  {% csrf_token %}
+  <p>Учебный год</p>{{ form.form.indexes__data }}
+  <button class="btn btn-primary" type="submit">Обновить</button>
+</form>
+  </div>
+{% for education in educations %}
+<h2 class="p-4">{{ education.title }}</h2>
+<table class="table table-striped">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">№</th>
+      <th class="col-3" scope="col">Название показателей</th>
+      <th scope="col">Балл</th>
+      <th scope="col">Кол-во показателей</th>
+      <th scope="col">Сумма баллов</th>
+
+      <th scope="col">Номера приказов</th>
+      <th scope="col">Примечание</th>
+    </tr>
+  </thead>
+
+  <tbody class="table-group-divider">
+  {% for i in disciplines %}
+  {% if i.education == education %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td><a href="{% url 'discipline_detail' i.pk %}">{{ i.title }}</a></td>
+      {% for j in indexes %}
+        {% if j.discripline.id == i.id %}
+          <td>{{ j.bally }}</td>
+          <td>{{ j.quantity }}</td>
+          <td>{{ j.bally|mul:j.quantity }}</td>
+          <td>{{ j.protocol }}</td>
+          <td>{{ j.primechanie }}</td>
+        <td><a href="{% url 'index_update' j.pk %}" class="btn btn-success">Изменить</a></td>
+        {% endif %}
+      {% endfor %}
+    </tr>
+
+  {% endif %}
+  {% endfor %}
+
+
+  </tbody>
+</table>
+{% endfor %}
+
+
+
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="{% url 'wordgen' account.id %}" method="post">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Распечатать Отчет {{ account.firstname }}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+
+          {% csrf_token %}
+          <p>Учебный год</p>
+          {{ wordform.data }}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        <button type="submit" class="btn btn-primary">Отчет</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+
+
+
+{% endblock %}
